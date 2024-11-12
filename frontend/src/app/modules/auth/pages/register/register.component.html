@@ -1,0 +1,162 @@
+<div class="modal-header border-0" ngbAutofocus="false">
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <h1 class="py-1 text-center">
+        <span>Join&nbsp;</span>
+        <span class="bh_blue_body_text fs-2 fw-bold">Blog</span>
+        <span class="bh_red_body_text fs-2 fw-bold">Hub</span>
+    </h1>
+    <form [formGroup]="registerForm" novalidate autocomplete="off">
+        <div>
+            <div class="container py-3">
+                <div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" formControlName="first_name" tabindex="1"
+                                    (keypress)="checkWhiteSpace($event)"
+                                    [ngClass]="{'has-error': registerForm.controls['first_name'].errors}">
+                                <div
+                                    *ngIf="registerForm.controls['first_name'].errors && registerForm.controls['first_name'].touched">
+                                    <span
+                                        *ngIf="registerForm.controls['first_name'].errors && registerForm.controls['first_name'].errors.required"
+                                        class="text-danger">
+                                        Please enter first name
+                                    </span>
+                                    <span *ngIf="registerForm.controls['first_name'].errors?.minlength"
+                                        class="text-danger">
+                                        First name must be at least 2 characters
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" formControlName="last_name" tabindex="1"
+                                    (keypress)="checkWhiteSpace($event)"
+                                    [ngClass]="{'has-error': registerForm.controls['last_name'].errors}">
+                                <div
+                                    *ngIf="registerForm.controls['last_name'].errors && registerForm.controls['last_name'].touched">
+                                    <span
+                                        *ngIf="registerForm.controls['last_name'].errors && registerForm.controls['last_name'].errors.required"
+                                        class="text-danger">
+                                        Please enter last name
+                                    </span>
+                                    <span *ngIf="registerForm.controls['last_name'].errors?.minlength"
+                                        class="text-danger">
+                                        Last name must be at least 2 characters
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" formControlName="email" tabindex="1"
+                            (keypress)="checkWhiteSpace($event)"
+                            [ngClass]="{'has-error': registerForm.controls['email'].errors}">
+                        <div *ngIf="registerForm.controls['email'].errors && registerForm.controls['email'].touched">
+                            <span
+                                *ngIf="registerForm.controls['email'].errors && registerForm.controls['email'].errors.required"
+                                class="text-danger">
+                                Please enter email
+                            </span>
+                            <span
+                                *ngIf="registerForm.controls['email'].errors && registerForm.controls['email'].errors.pattern"
+                                class="text-danger">
+                                Please enter valid email
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group password_field_css mb-3">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <input [type]="passwordTextType ? 'text' : 'password'"
+                                class="form-control password_field_input" formControlName="password" tabindex="2"
+                                [ngClass]="{'has-error': registerForm.controls['password'].errors}">
+                            <span class="input-group-text c-pointer password_field_span"><i class="fa-solid fa-eye"
+                                    [ngClass]="{
+                                    'fa-eye-slash': !passwordTextType,
+                                    'fa-eye': passwordTextType
+                                  }" (click)="togglePasswordTextType()"></i></span>
+                        </div>
+                        <div
+                            *ngIf="registerForm.controls['password'].errors && registerForm.controls['password'].touched">
+                            <span
+                                *ngIf="registerForm.controls['password'].errors && registerForm.controls['password'].errors.required"
+                                class="text-danger">
+                                Please enter password
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group password_field_css mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input [type]="confirmPasswordTextType ? 'text' : 'password'"
+                                class="form-control password_field_input" formControlName="confirm_password"
+                                tabindex="3"
+                                [ngClass]="{'has-error': registerForm.controls['confirm_password'].errors}">
+                            <span class="input-group-text c-pointer password_field_span"><i class="fa-solid fa-eye"
+                                    [ngClass]="{
+                                    'fa-eye-slash': !confirmPasswordTextType,
+                                    'fa-eye': confirmPasswordTextType
+                                  }" (click)="confirmTogglePasswordTextType()"></i></span>
+                        </div>
+                        <div
+                            *ngIf="registerForm.controls['confirm_password'].errors && registerForm.controls['confirm_password'].touched">
+                            <span
+                                *ngIf="registerForm.controls['confirm_password'].errors && registerForm.controls['confirm_password'].errors.required"
+                                class="text-danger">
+                                Please enter confirm password
+                            </span>
+                            <span
+                                *ngIf="registerForm.controls['confirm_password'].errors && registerForm.controls['confirm_password'].errors.confirmedValidator"
+                                class="text-danger">
+                                password & confirm password does not match.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="my-3 d-flex align-items-center justify-content-between">
+                        <h6 class="card-title">
+                            <span class="bh_blue_body_text">Already have an account?&nbsp;</span>
+                            <a href="#" class="bh_red_body_text title_animation" (click)="navigateToSignIn()">Sign
+                                in</a>
+                        </h6>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <button type="submit" class="btn bh_btn_blue bh_btn_radius"
+                            (click)="registerWithEmailPassword()">Sign
+                            up</button>
+                    </div>
+
+                    <div class="bh_striped">
+                        <span class="bh_striped_line"></span>
+                        <span class="bh_striped_text">OR</span>
+                        <span class="bh_striped_line"></span>
+                    </div>
+
+                </div>
+                <div class="row mt-2 d-flex align-items-center justify-content-center">
+                    <div class="card text-center c-pointer w-50 google_btn">
+                        <div class="card-body p-0 d-flex justify-content-center align-items-center">
+                            <img src="../../../assets/icons8-google-48.png" class="m-1" alt="" height="24px"
+                                width="24px">
+                            <a (click)="registerWithGoogle()" class="title_animation">
+                                Sign up with Google
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

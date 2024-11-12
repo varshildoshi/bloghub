@@ -1,0 +1,91 @@
+<div class="modal-header border-0" ngbAutofocus="false">
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <h1 class="py-1 text-center">
+        <span class="bh_blue_body_text fs-2 fw-bold">Welcome&nbsp;</span>
+        <span class="bh_red_body_text fs-2 fw-bold">back.</span>
+    </h1>
+    <form [formGroup]="loginForm" novalidate autocomplete="off">
+        <div>
+            <div class="container py-3">
+                <div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" formControlName="email" tabindex="1"
+                            (keypress)="checkWhiteSpace($event)"
+                            [ngClass]="{'has-error': loginForm.controls['email'].errors}">
+                        <div *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].touched">
+                            <span
+                                *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].errors.required"
+                                class="text-danger">
+                                Please enter email
+                            </span>
+                            <span
+                                *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].errors.pattern"
+                                class="text-danger">
+                                Please enter valid email
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group password_field_css mb-3">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <input [type]="passwordTextType ? 'text' : 'password'"
+                                class="form-control password_field_input" formControlName="password" tabindex="2"
+                                [ngClass]="{'has-error': loginForm.controls['password'].errors}">
+                            <span class="input-group-text c-pointer password_field_span"><i class="fa-solid fa-eye"
+                                    [ngClass]="{
+                                    'fa-eye-slash': !passwordTextType,
+                                    'fa-eye': passwordTextType
+                                  }" (click)="togglePasswordTextType()"></i></span>
+                        </div>
+                        <div *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].touched">
+                            <span
+                                *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].errors.required"
+                                class="text-danger">
+                                Please enter password
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="my-3 d-flex align-items-center justify-content-between">
+                        <h6 class="card-title">
+                            <span class="bh_blue_body_text">No account?&nbsp;</span>
+                            <a href="#" class="bh_red_body_text title_animation" (click)="navigateToSignUp()">Create
+                                one</a>
+                        </h6>
+                        <h6 class="card-title">
+                            <a href="#" class="bh_blue_body_text title_animation">Forgot Password</a>
+                        </h6>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <button type="submit" class="btn bh_btn_blue bh_btn_radius"
+                            (click)="loginWithEmailPassword()">Sign
+                            in</button>
+                    </div>
+
+                    <div class="bh_striped">
+                        <span class="bh_striped_line"></span>
+                        <span class="bh_striped_text">OR</span>
+                        <span class="bh_striped_line"></span>
+                    </div>
+
+                </div>
+                <div class="row mt-2 d-flex align-items-center justify-content-center">
+                    <div class="card text-center c-pointer w-50 google_btn">
+                        <div class="card-body p-0 d-flex justify-content-center align-items-center">
+                            <img src="../../../assets/icons8-google-48.png" class="m-1" alt="" height="24px"
+                                width="24px">
+                            <a (click)="loginWithGoogle()" class="title_animation">
+                                Sign In with Google
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

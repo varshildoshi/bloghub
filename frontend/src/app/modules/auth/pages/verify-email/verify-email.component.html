@@ -1,0 +1,22 @@
+<div class="modal-header border-0" ngbAutofocus="false">
+    <!-- <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button> -->
+</div>
+<div class="modal-body">
+    <h1 class="py-1 text-center">
+        <span class="bh_blue_body_text fs-2 fw-bold">Check&nbsp;</span>
+        <span class="bh_red_body_text fs-2 fw-bold">your inbox.</span>
+    </h1>
+    <div class="d-flex align-items-center justify-content-center">
+        <img src="assets/images/blog/email.gif" width="130" alt="BlogHub">
+    </div>
+    <div class="d-flex align-items-center justify-content-center text-center flex-column py-2">
+        <h6>
+            Click the link we sent to<br><b class="bh_red_body_text">{{email}}</b>&nbsp;<br>to complete your account
+            set-up.
+        </h6>
+        <button type="button" class="btn bh_btn_blue bh_btn_radius my-2" (click)="navigateToHomePage()">OK</button>
+    </div>
+    <div class="d-flex align-items-center justify-content-center">
+        <img src="assets/images/logo/final-logo.png" width="70" alt="BlogHub">
+    </div>
+</div>

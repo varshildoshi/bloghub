@@ -1,0 +1,49 @@
+<div class="container">
+    <nav class="navbar navbar-expand-lg rounded bh_navbar navbar-light bg-light">
+        <div class="container">
+
+            <a class="navbar-brand d-flex align-items-center justify-content-between pe-3" routerLink="/">
+                <img src="assets/images/logo/final-logo.png" class="me-3" width="70" alt="BlogHub">
+                <span class="bh_blue_body_text fs-2 fw-bold">Blog</span><span
+                    class="bh_red_body_text fs-2 fw-bold">Hub</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09"
+                aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample09">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item px-1">
+                        <a class="nav-link bh_blue_body_text" routerLinkActive="active" routerLink="/"
+                            [routerLinkActiveOptions]="{exact:true}">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item px-1">
+                        <a class="nav-link bh_blue_body_text" routerLinkActive="active" routerLink="#"
+                            [routerLinkActiveOptions]="{exact:true}">
+                            Our Story
+                        </a>
+                    </li>
+                    <li class="nav-item px-1">
+                        <a class="nav-link bh_blue_body_text" routerLinkActive="active" routerLink="#"
+                            [routerLinkActiveOptions]="{exact:true}">Contact us</a>
+                    </li>
+                    <li class="nav-item px-1">
+                        <a class="nav-link bh_blue_body_text c-pointer" (click)="navigateToSignIn()">Sign in</a>
+                    </li>
+                    <li class="nav-item dropdown px-1">
+                        <a class="nav-link dropdown-toggle bh_blue_body_text" href="#" id="dropdown09"
+                            data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown09">
+                            <li><a class="dropdown-item bh_blue_body_text" href="#">Admin</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</div>
