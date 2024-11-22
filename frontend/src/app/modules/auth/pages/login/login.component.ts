@@ -106,8 +106,9 @@ export class LoginComponent implements OnInit {
     this.authService.setVerifyData({ email: this.loginForm.value.email });
     this.authService.loginWithEmailPassword(this.loginForm.value)
       .then((res: any) => {
+        console.log(res);
         this.commonFunction.closeAllModalBox();
-        // this.router.navigate(['/blogs']);
+        this.router.navigate(['/blogs']);
       }).catch(e => {
         this.toastr.error(e.message, 'Error');
       });

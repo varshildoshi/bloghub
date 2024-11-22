@@ -5,7 +5,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DEFAULT_PROFILE_ICON } from '../../helpers/bloghub.config';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import * as auth from 'firebase/auth';
+import * as firebase from 'firebase/auth';
 
 @Component({
   selector: 'app-bh-header',
@@ -19,13 +21,15 @@ export class BhHeaderComponent implements OnInit {
   currentUser;
   isAuthenticated: Observable<boolean> | boolean = false;
   defaultProfileIcon = DEFAULT_PROFILE_ICON;
+  private userSub: Subscription;
+  profileData;
 
   constructor(
     public commonFunction: CommonFunction,
     public activeModal: NgbActiveModal,
     private authService: AuthenticationService,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {
   }
 
@@ -33,11 +37,12 @@ export class BhHeaderComponent implements OnInit {
   }
 
   getUserAuthState() {
-    this.isAuthenticated = this.authService.checkUserIsAuthorized();
+    // this.isAuthenticated = this.authService.checkUserIsAuthorized();
 
     // console.log(this.isAuthenticated);
 
-    this.authService.userInfo.subscribe(res => {
+    this.userSub = this.authService.user.subscribe(res => {
+      this.isAuthenticated = !!res;
       if (res) {
         this.currentUser = res;
         this.cd.detectChanges();
@@ -47,6 +52,12 @@ export class BhHeaderComponent implements OnInit {
         this.cd.detectChanges();
       }
     });
+    this.getUserProfileData();
+  }
+
+  getUserProfileData() {
+    let profile = firebase.getAuth().currentUser;
+    this.currentUser = {...profile};
   }
 
   ngDoCheck() {
@@ -61,7 +72,11 @@ export class BhHeaderComponent implements OnInit {
   logout() {
     // this.getUserAuthState();
     this.authService.logout();
-    // this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/');
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
   }
 
 }

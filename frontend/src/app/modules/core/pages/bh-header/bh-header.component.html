@@ -16,7 +16,7 @@
             <div class="collapse navbar-collapse" id="navbarsExample09">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
 
-                    <li class="nav-item px-1" *ngIf="!isAuthenticated && !currentUser">
+                    <li class="nav-item px-1" *ngIf="!isAuthenticated">
                         <a class="nav-link bh_blue_body_text" routerLinkActive="active" routerLink=""
                             [routerLinkActiveOptions]="{exact:true}">
                             Home
@@ -32,14 +32,14 @@
                         <a class="nav-link bh_blue_body_text" routerLinkActive="active" routerLink="#"
                             [routerLinkActiveOptions]="{exact:true}">Contact us</a>
                     </li>
-                    <li class="nav-item px-1" *ngIf="!isAuthenticated && !currentUser">
+                    <li class="nav-item px-1" *ngIf="!isAuthenticated">
                         <a class="nav-link bh_blue_body_text c-pointer" (click)="navigateToSignIn()">Sign in</a>
                     </li>
-                    <li class="nav-item ms-3 dropdown" *ngIf="isAuthenticated && currentUser">
+                    <li class="nav-item ms-3 dropdown" *ngIf="isAuthenticated">
                         <a class="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button"
                             data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <img class="avatar-img rounded-2" referrerpolicy="no-referrer"
+                            <img class="avatar-img" referrerpolicy="no-referrer"
                                 src="{{currentUser && currentUser.photoURL ? currentUser.photoURL : defaultProfileIcon.image}}"
                                 alt="avatar">
                         </a>

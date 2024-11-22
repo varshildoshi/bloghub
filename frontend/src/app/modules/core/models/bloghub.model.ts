@@ -42,3 +42,11 @@ export interface AuthLoginUser {
     photoURL: string;
     emailVerified: boolean;
 }
+
+export interface User1 {
+    uid: string;
+    email: string;
+    displayName: string;
+    photoURL: string;
+    emailVerified: boolean;
+  }
