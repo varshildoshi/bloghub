@@ -16,6 +16,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerIntreceptorService } from './services/spinner-intreceptor.service';
+import { AuthenticationService } from './services/authentication.service';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { SpinnerIntreceptorService } from './services/spinner-intreceptor.servic
       useClass: SpinnerIntreceptorService,
       multi: true,
     },
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

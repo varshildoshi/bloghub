@@ -120,21 +120,6 @@ export class TokenStorage {
   }
 
   /**
-   * Set organization id
-   * @returns TokenStorage
-   */
-  public setOrganizationID(organizationID: string): TokenStorage {
-    localStorage.setItem(btoa('organizationID'), organizationID);
-    return this;
-  }
-
-  public setUserOrganizationRoleID(userOrganizationRoleID: string): TokenStorage {
-    localStorage.setItem(btoa('userOrganizationRoleID'), userOrganizationRoleID);
-    return this;
-  }
-
-
-  /**
    * SET User Id
    * @returns Observable<string>
    */
@@ -194,38 +179,11 @@ export class TokenStorage {
   }
 
   /**
-   * Set plan Status
-   * @returns TokenStorage
-   */
-  public setPlanStatus(payment: string): TokenStorage {
-    localStorage.setItem(btoa('planStatus'), payment);
-    return this;
-  }
-
-
-  /**
    * Set userId
    * @returns TokenStorage
    */
   public setAdminUserID(userId: string): TokenStorage {
     localStorage.setItem(btoa('userId'), userId);
     return this;
-  }
-
-
-  /**
-   * Set accountId
-   * @returns TokenStorage
-   */
-  public setAccountID(accountId: string): TokenStorage {
-    localStorage.setItem(btoa('accountId'), accountId);
-    return this;
-  }
-
-  /**
-   * Remove tokens
-   */
-  public clear() {
-    localStorage.clear();
   }
 }

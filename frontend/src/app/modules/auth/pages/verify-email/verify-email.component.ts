@@ -28,12 +28,13 @@ export class VerifyEmailComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.authService.verifyEmail(this.email);
+    // this.authService.verifyEmail(this.email);
   }
 
-  navigateToHomePage() {
+  navigateToLogin() {
     this.commonFunction.closeAllModalBox();
     this.router.navigateByUrl('/');
+    this.commonFunction.openSignInComponent();
   }
 
 }

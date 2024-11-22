@@ -1,5 +1,6 @@
 // import jwt_decode from 'jwt-decode';
 import { jwtDecode } from "jwt-decode";
+import { LOCALSTORAGE_TOKEN_NAME } from "./bloghub.config";
 
 export const getUserDetails = (token: any) => {
     try {
@@ -7,13 +8,13 @@ export const getUserDetails = (token: any) => {
         return decodedToken
     }
     catch (error) {
-        redirectToLogin();
+        redirectToHome();
     }
 }
 
-export const redirectToLogin = () => {
-    // localStorage.removeItem('access_token');
-    // window.location.href = '/auth/login';
+export const redirectToHome = () => {
+    localStorage.removeItem(`${LOCALSTORAGE_TOKEN_NAME.name}`);
+    window.location.href = '/';
     return false;
 }
 

@@ -16,3 +16,8 @@ export const LOCALSTORAGE_CONFIG = {
 export const LOCALSTORAGE_TOKEN_NAME = {
     name: `${LOCALSTORAGE_CONFIG.prefix}${LOCALSTORAGE_CONFIG.delimiterString}${LOCALSTORAGE_CONFIG.birth_date}`
 };
+
+export const DEFAULT_PROFILE_ICON = {
+    // image: '../../../../../assets/images/avatar/user-undefined.png'
+    image: '../../../../../assets/images/avatar/icons8-user-100.png'
+}

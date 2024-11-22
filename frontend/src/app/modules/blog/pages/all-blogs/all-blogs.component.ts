@@ -13,6 +13,8 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class AllBlogsComponent implements OnInit {
 
+  currentUser;
+
   constructor(
     private authService: AuthenticationService,
     private activeModalBox: NgbActiveModal,
@@ -20,13 +22,8 @@ export class AllBlogsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.authService.user$.subscribe(res => {
-    //   console.log(res);
-    // });
+    this.authService.userInfo.subscribe(x => {
+      this.currentUser = x;
+    })
   }
-
-  logout() {
-    this.authService.Logout();
-  }
-
 }

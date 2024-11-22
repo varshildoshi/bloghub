@@ -7,6 +7,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { BaseService } from '../services/base.service';
 import { TokenStorage } from '../services/token-storage.service';
 import { UserService } from '../services/user.service';
+import { ErrorService } from '../services/error.service';
 
 @NgModule({
   declarations: [],
@@ -15,7 +16,13 @@ import { UserService } from '../services/user.service';
     UIModulesRouting,
     CoreModule
   ],
-  providers: [AuthenticationService, BaseService, TokenStorage, UserService],
+  providers: [
+    AuthenticationService,
+    BaseService,
+    TokenStorage,
+    UserService,
+    ErrorService
+  ],
   exports: [UIModulesRouting]
 })
 export class UIModule { }

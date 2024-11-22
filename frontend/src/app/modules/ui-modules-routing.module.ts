@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginAuthorizationGuardService } from './core/guards/login-authorization-guard-service';
 import { BaseComponent } from './core/pages/base/base.component';
+import { AuthorizationGuardService } from './core/guards/authorization-guard-service';
 
 const routes: Routes = [
   {
@@ -12,6 +13,8 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.BlogHubAdminModule),
   },
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
+  // { path: 'blogs', pathMatch: 'full', redirectTo: 'blogs' },
   {
     path: '',
     children: [
@@ -22,21 +25,16 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
-            // canActivate: [LoginAuthorizationGuardService]
+            canActivate: [LoginAuthorizationGuardService],
           },
           {
             path: 'blogs',
             loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule),
-            // canActivate: [LoginAuthorizationGuardService]
+            canActivate: [AuthorizationGuardService],
           }
         ]
       }
     ],
-  },
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'blogs'
   },
   {
     path: 'user',

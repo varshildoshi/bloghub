@@ -80,50 +80,11 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * Form Submit
-   */
-  onSubmit() {
-    // Check form valid
-    if (this.loginForm.invalid) {
-      Object.keys(this.loginForm.controls).forEach(controlName =>
-        this.loginForm.controls[controlName].markAsTouched()
-      );
-      return;
-    }
-    this.loading = true;
-
-    // this.authService.login(this.loginForm.value).pipe(tap(res => {
-    //   if (res) {
-    //     // Navigate to Dashbord.
-    //     this.router.navigate(['/dashboard']);
-    //   } else {
-    //     // this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.INVALID_LOGIN'), 'danger');
-    //   }
-    // }),
-    //   catchError(err => {
-    //     if (err.error.msg_code === 114) {
-    //       this.errorMessage = err;
-    //     }
-    //     // this.authNoticeService.setNotice(err.error.message, 'error');
-    //     return of(err);
-    //   }),
-    //   takeUntil(this.unsubscribe),
-    //   finalize(() => {
-    //     this.loading = false;
-    //     this.cdr.markForCheck();
-    //   })
-    // ).subscribe();
-  }
-
-  /**
    * Login With Google
    */
   loginWithGoogle() {
     this.authService.googleAuth().then(res => {
-      console.log(res);
-      this.authService.setUserData(PROVIDER_TYPE.GOOGLE, res);
       this.commonFunction.closeAllModalBox();
-      this.router.navigate(['/blogs']);
     }).catch(err => {
       this.toastr.error(err, 'Error');
     });
@@ -141,26 +102,16 @@ export class LoginComponent implements OnInit {
       );
       return;
     }
-    this.authService.loginWithEmailPassword(this.loginForm.value).subscribe(
-      async res => {
-        console.log(res);
-        await this.commonFunction.setIdTokenInLocalStorage(res.idToken);
-        // this.authService.setUserData(PROVIDER_TYPE.EMAIL_PASSWORD, res);
-        // this.commonFunction.closeAllModalBox();
-        this.router.navigate(['/blogs']);
-      }, err => {
-        console.log(err);
-        this.toastr.error(err.error.error.message, 'Error');
+
+    this.authService.setVerifyData({ email: this.loginForm.value.email });
+    this.authService.loginWithEmailPassword(this.loginForm.value)
+      .then((res: any) => {
+        this.commonFunction.closeAllModalBox();
+        // this.router.navigate(['/blogs']);
+      }).catch(e => {
+        this.toastr.error(e.message, 'Error');
       });
 
-    // this.commonFunction.closeAllModalBox();
-    // this.userService.addUser({ uid, email, displayName: email });
-    // this.router.navigate(['/blogs']);
-
-    // catch((err) => {
-    //   console.log(err.error);
-    //   this.toastr.error(err.message, 'Error');
-    // });
   }
 
   /**

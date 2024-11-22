@@ -14,9 +14,10 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsExample09">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item px-1">
-                        <a class="nav-link bh_blue_body_text" routerLinkActive="active" routerLink="/"
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+
+                    <li class="nav-item px-1" *ngIf="!isAuthenticated && !currentUser">
+                        <a class="nav-link bh_blue_body_text" routerLinkActive="active" routerLink=""
                             [routerLinkActiveOptions]="{exact:true}">
                             Home
                         </a>
@@ -31,14 +32,53 @@
                         <a class="nav-link bh_blue_body_text" routerLinkActive="active" routerLink="#"
                             [routerLinkActiveOptions]="{exact:true}">Contact us</a>
                     </li>
-                    <li class="nav-item px-1">
+                    <li class="nav-item px-1" *ngIf="!isAuthenticated && !currentUser">
                         <a class="nav-link bh_blue_body_text c-pointer" (click)="navigateToSignIn()">Sign in</a>
                     </li>
-                    <li class="nav-item dropdown px-1">
-                        <a class="nav-link dropdown-toggle bh_blue_body_text" href="#" id="dropdown09"
-                            data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown09">
-                            <li><a class="dropdown-item bh_blue_body_text" href="#">Admin</a></li>
+                    <li class="nav-item ms-3 dropdown" *ngIf="isAuthenticated && currentUser">
+                        <a class="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button"
+                            data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <img class="avatar-img rounded-2" referrerpolicy="no-referrer"
+                                src="{{currentUser && currentUser.photoURL ? currentUser.photoURL : defaultProfileIcon.image}}"
+                                alt="avatar">
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-animation dropdown-menu-end shadow p-3"
+                            aria-labelledby="profileDropdown">
+                            <li class="px-3 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-sm me-3">
+                                        <img class="avatar-img rounded-circle shadow" referrerpolicy="no-referrer"
+                                            src="{{currentUser && currentUser.photoURL ? currentUser.photoURL : defaultProfileIcon.image}}"
+                                            alt="avatar">
+                                    </div>
+                                    <div>
+                                        <a class="h6 mt-2 mt-sm-0"
+                                            href="javascript:void(0);">{{currentUser.displayName}}</a>
+                                        <p class="small m-0">{{currentUser.email}}</p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Links -->
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                        class="bi bi-bookmark-check fa-fw me-2"></i>My
+                                    Profile</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                        class="bi bi-heart fa-fw me-2"></i>My Posts</a>
+                            </li>
+                            <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                        class="bi bi-gear fa-fw me-2"></i>Settings</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                        class="bi bi-info-circle fa-fw me-2"></i>Help
+                                    Center</a></li>
+                            <li><a class="dropdown-item bg-danger-soft-hover" href="javascript:void(0);"
+                                    (click)="logout()"><i class="fa-solid fa-right-from-bracket fa-fw me-2"></i>Sign
+                                    Out</a></li>
                         </ul>
                     </li>
                 </ul>

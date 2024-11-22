@@ -94,8 +94,6 @@ export class RegisterComponent implements OnInit {
 
   registerWithGoogle() {
     this.authService.googleAuth().then(res => {
-      console.log('registerWithGoogle:::::', res);
-      this.authService.setUserData(PROVIDER_TYPE.GOOGLE, res);
       this.commonFunction.closeAllModalBox();
       this.router.navigate(['/blogs']);
     }).catch(err => {
@@ -111,75 +109,14 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.authService.registerWithEmailPassword(this.registerForm.value).subscribe(
-      async res => {
-        console.log('registerWithEmailPassword>>>>>', res);
-        await this.commonFunction.setIdTokenInLocalStorage(res.idToken);
-        const user = this.commonFunction.getIdTokenInLocalStorage();
-        console.log(user);
-
-        let payload = {
-          uid: user.user_id,
-          email: user.email,
-          displayName: user.displayName ? user.displayName : '',
-          photoURL: user.photoURL ? user.photoURL : '',
-          emailVerified: user.email_verified ? user.email_verified : false
-        };
-
-        this.authService.setUserData(PROVIDER_TYPE.EMAIL_PASSWORD, payload);
-
-        // this.authService.setVerifyData({ email: this.registerForm.value.email });
-        // this.authService.setUserData(PROVIDER_TYPE.EMAIL_PASSWORD, res);
-        // this.verifyEmail();
-        // this.router.navigate(['/blogs']);
-      }, err => {
-        console.log(err);
-        this.toastr.error(err.error.error.message, 'Error');
-      });
+    this.authService.setVerifyData({ email: this.registerForm.value.email });
+    this.authService.registerWithEmailPassword(this.registerForm.value).then(d => {
+      
+    }).catch(e => {
+      // console.log(e);
+      // this.toastr.error(e.message, 'Error');
+    });
   }
-
-  verifyEmail() {
-    const user = this.commonFunction.getIdTokenInLocalStorage();
-    // console.log(user);
-    this.commonFunction.closeAllModalBox();
-    this.commonFunction.openVerifyEmailComponent();
-  }
-
-  /**
-   * Form Submit
-   */
-  onSubmit() {
-    // Check form valid
-    if (this.registerForm.invalid) {
-      Object.keys(this.registerForm.controls).forEach(controlName =>
-        this.registerForm.controls[controlName].markAsTouched()
-      );
-      return;
-    }
-    this.loading = true;
-    // this.authService.register(this.registerForm.value).pipe(tap(res => {
-    //   if (res) {
-    //     // Navigate to Dashbord.
-    //     this.router.navigate(['/auth/login']);
-    //   } else {
-    //     // this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.INVALID_LOGIN'), 'danger');
-    //   }
-    // }),
-    //   catchError(err => {
-    //     if (err.error.msg_code === 114) {
-    //       this.errorMessage = err;
-    //     }
-    //     // this.authNoticeService.setNotice(err.error.message, 'error');
-    //     return of(err);
-    //   }),
-    //   takeUntil(this.unsubscribe),
-    //   finalize(() => {
-    //     this.loading = false;
-    //     this.cdr.markForCheck();
-    //   })
-    // ).subscribe();
-  }
-
 
   /**
    * On destroy

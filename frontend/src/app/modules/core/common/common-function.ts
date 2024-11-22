@@ -8,6 +8,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { VerifyEmailComponent } from '../../auth/pages/verify-email/verify-email.component';
 import { LOCALSTORAGE_TOKEN_NAME } from '../helpers/bloghub.config';
 import { getUserDetails } from '../helpers/jwt.helper';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Injectable({
     providedIn: 'root',
