@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then(m => m.BlogHubAdminModule),
+    loadChildren: () => import('./admin/admin.module').then(m => m.BlogHubAdminModule), 
   },
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   // { path: 'blogs', pathMatch: 'full', redirectTo: 'blogs' },
