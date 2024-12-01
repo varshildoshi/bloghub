@@ -16,17 +16,17 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label class="form-label">First Name</label>
-                                <input type="text" class="form-control" formControlName="first_name" tabindex="1"
+                                <input type="text" class="form-control" formControlName="firstName" tabindex="1"
                                     (keypress)="checkWhiteSpace($event)"
-                                    [ngClass]="{'has-error': registerForm.controls['first_name'].errors}">
+                                    [ngClass]="{'has-error': registerForm.controls['firstName'].errors}">
                                 <div
-                                    *ngIf="registerForm.controls['first_name'].errors && registerForm.controls['first_name'].touched">
+                                    *ngIf="registerForm.controls['firstName'].errors && registerForm.controls['firstName'].touched">
                                     <span
-                                        *ngIf="registerForm.controls['first_name'].errors && registerForm.controls['first_name'].errors.required"
+                                        *ngIf="registerForm.controls['firstName'].errors && registerForm.controls['firstName'].errors.required"
                                         class="text-danger">
                                         Please enter first name
                                     </span>
-                                    <span *ngIf="registerForm.controls['first_name'].errors?.minlength"
+                                    <span *ngIf="registerForm.controls['firstName'].errors?.minlength"
                                         class="text-danger">
                                         First name must be at least 2 characters
                                     </span>
@@ -37,17 +37,17 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label class="form-label">Last Name</label>
-                                <input type="text" class="form-control" formControlName="last_name" tabindex="1"
+                                <input type="text" class="form-control" formControlName="lastName" tabindex="1"
                                     (keypress)="checkWhiteSpace($event)"
-                                    [ngClass]="{'has-error': registerForm.controls['last_name'].errors}">
+                                    [ngClass]="{'has-error': registerForm.controls['lastName'].errors}">
                                 <div
-                                    *ngIf="registerForm.controls['last_name'].errors && registerForm.controls['last_name'].touched">
+                                    *ngIf="registerForm.controls['lastName'].errors && registerForm.controls['lastName'].touched">
                                     <span
-                                        *ngIf="registerForm.controls['last_name'].errors && registerForm.controls['last_name'].errors.required"
+                                        *ngIf="registerForm.controls['lastName'].errors && registerForm.controls['lastName'].errors.required"
                                         class="text-danger">
                                         Please enter last name
                                     </span>
-                                    <span *ngIf="registerForm.controls['last_name'].errors?.minlength"
+                                    <span *ngIf="registerForm.controls['lastName'].errors?.minlength"
                                         class="text-danger">
                                         Last name must be at least 2 characters
                                     </span>
@@ -128,7 +128,7 @@
                     <div class="my-3 d-flex align-items-center justify-content-between">
                         <h6 class="card-title">
                             <span class="bh_blue_body_text">Already have an account?&nbsp;</span>
-                            <a href="#" class="bh_red_body_text title_animation" (click)="navigateToSignIn()">Sign
+                            <a href="javascript:void(0);" class="bh_red_body_text title_animation" (click)="navigateToSignIn()">Sign
                                 in</a>
                         </h6>
                     </div>

@@ -6,13 +6,15 @@ import { BhFooterComponent } from './pages/bh-footer/bh-footer.component';
 import { RouterModule } from '@angular/router';
 import { BloghubLoaderComponent } from './pages/bloghub-loader/bloghub-loader.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { FileUploaderComponent } from './pages/file-uploader/file-uploader.component';
 
 @NgModule({
   declarations: [
     BaseComponent,
     BhHeaderComponent,
     BhFooterComponent,
-    BloghubLoaderComponent
+    BloghubLoaderComponent,
+    FileUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     BaseComponent,
     BhHeaderComponent,
     BhFooterComponent,
-    BloghubLoaderComponent
+    BloghubLoaderComponent,
+    FileUploaderComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

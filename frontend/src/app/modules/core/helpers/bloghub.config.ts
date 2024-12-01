@@ -21,3 +21,12 @@ export const DEFAULT_PROFILE_ICON = {
     // image: '../../../../../assets/images/avatar/user-undefined.png'
     image: '../../../../../assets/images/avatar/icons8-user-100.png'
 }
+
+export const VERIFIED_NOT_VERIFIED_ICON = {
+    verified_icon: '../../../../../assets/images/blog/verified.png',
+    not_verified_icon: '../../../../../assets/images/blog/notverified.png'
+}
+
+export const DEFAULT_DISPLAYNAME_PREFIX = {
+    perfix: '@'
+}

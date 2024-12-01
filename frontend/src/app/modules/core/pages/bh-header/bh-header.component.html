@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container bh_profile_header_section">
     <nav class="navbar navbar-expand-lg rounded bh_navbar navbar-light bg-light">
         <div class="container">
 
@@ -36,16 +36,15 @@
                         <a class="nav-link bh_blue_body_text c-pointer" (click)="navigateToSignIn()">Sign in</a>
                     </li>
                     <li class="nav-item ms-3 dropdown" *ngIf="isAuthenticated">
-                        <a class="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button"
-                            data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown"
+                        <a class="avatar avatar-sm p-0" href="javascript:void(0);" id="profileDropdown" role="button"
+                            data-bs-auto-close="true" data-bs-display="static" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <img class="avatar-img" referrerpolicy="no-referrer"
                                 src="{{currentUser && currentUser.photoURL ? currentUser.photoURL : defaultProfileIcon.image}}"
                                 alt="avatar">
                         </a>
 
-                        <ul class="dropdown-menu dropdown-animation dropdown-menu-end shadow p-3"
-                            aria-labelledby="profileDropdown">
+                        <ul class="dropdown-menu dropdown-animation dropdown-menu-end shadow p-3 profileDropdown">
                             <li class="px-3 mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="avatar avatar-sm me-3">
@@ -61,15 +60,15 @@
                                 </div>
                             </li>
 
-                            <!-- Links -->
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                        class="bi bi-bookmark-check fa-fw me-2"></i>My
+                            <li><a class="dropdown-item" href="javascript:void(0);" routerLinkActive="active"
+                                    routerLink="user/my-profile" [routerLinkActiveOptions]="{exact:true}"><i
+                                        class="fa-solid fa-user-tie fa-fw me-2"></i>My
                                     Profile</a></li>
                             <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                        class="bi bi-heart fa-fw me-2"></i>My Posts</a>
+                                        class="fa-regular fa-rectangle-list fa-fw me-2"></i>My Posts</a>
                             </li>
                             <li><a class="dropdown-item" href="javascript:void(0);"><i
                                         class="bi bi-gear fa-fw me-2"></i>Settings</a></li>

@@ -56,8 +56,8 @@ export class RegisterComponent implements OnInit {
    */
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      first_name: ['', [Validators.required, Validators.minLength(2)]],
-      last_name: ['', [Validators.required, Validators.minLength(2)]],
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
       // username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.pattern(emailPattern())]],
       password: ['', {
@@ -110,8 +110,9 @@ export class RegisterComponent implements OnInit {
     }
 
     this.authService.setVerifyData({ email: this.registerForm.value.email });
+    this.authService.setAdditionalProfileData({ firstName: this.registerForm.value.firstName, lastName: this.registerForm.value.lastName });
     this.authService.registerWithEmailPassword(this.registerForm.value).then(d => {
-      
+
     }).catch(e => {
       // console.log(e);
       // this.toastr.error(e.message, 'Error');

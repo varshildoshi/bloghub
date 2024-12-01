@@ -469,12 +469,54 @@ a {
     }
 }
 
-.password_field_css {
+.password_field_css,
+.profile_prefix_css {
     .password_field_input {
         border-right: none !important;
     }
 
-    .password_field_span {
+    .password_field_span,
+    .profile_prefix_span {
         background-color: transparent !important;
+    }
+}
+
+.bh_profile_header_section {
+    .avatar-sm {
+        height: 3.0rem;
+        width: 3.0rem;
+        position: relative;
+        display: inline-block !important;
+    }
+
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+        border-radius: 25%;
+    }
+
+    .profileDropdown {
+        .dropdown-item {
+            &:hover {
+                background-color: rgba(224, 41, 95, 0.1) !important;
+            }
+
+            &.active {
+                background-color: rgba(224, 41, 95, 0.1) !important;
+            }
+        }
+    }
+}
+
+// PROFILE PAGE START //
+.bh_profile_page {
+    min-height: 100vh !important;
+    padding: 5rem 0 !important;
+
+    .icon_h_w {
+        height: 25px;
+        width: 25px;
     }
 }

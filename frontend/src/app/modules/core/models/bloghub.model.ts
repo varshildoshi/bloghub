@@ -49,4 +49,6 @@ export interface User1 {
     displayName: string;
     photoURL: string;
     emailVerified: boolean;
-  }
+    firstName?: string;
+    lastName?: string;
+}

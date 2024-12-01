@@ -23,7 +23,7 @@ export class AllBlogsComponent implements OnInit {
 
   ngOnInit(): void {
     // this.authService.autoLogin();
-    // this.authService.isLoggedIn1();
+    // this.authService.isLoggedIn();
     // this.authService.user.subscribe(x => {
     //   this.currentUser = x;
     // })

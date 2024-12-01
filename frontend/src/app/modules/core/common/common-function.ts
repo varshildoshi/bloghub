@@ -9,6 +9,7 @@ import { VerifyEmailComponent } from '../../auth/pages/verify-email/verify-email
 import { LOCALSTORAGE_TOKEN_NAME } from '../helpers/bloghub.config';
 import { getUserDetails } from '../helpers/jwt.helper';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ResetPasswordComponent } from '../../auth/pages/reset-password/reset-password.component';
 
 @Injectable({
     providedIn: 'root',
@@ -21,6 +22,9 @@ export class CommonFunction {
         private modalService: NgbModal,
     ) { }
 
+    /**
+     * Open Sign-in component.
+     */
     openSignInComponent() {
         const modalRef = this.modalService.open(LoginComponent,
             {
@@ -36,6 +40,9 @@ export class CommonFunction {
         );
     }
 
+    /**
+     * Open Sign-up component.
+     */
     openSignUpComponent() {
         const modalRef = this.modalService.open(RegisterComponent,
             {
@@ -51,6 +58,9 @@ export class CommonFunction {
         );
     }
 
+    /**
+     * Open Verify email component.
+     */
     openVerifyEmailComponent() {
         const modalRef = this.modalService.open(VerifyEmailComponent,
             {
@@ -66,17 +76,40 @@ export class CommonFunction {
         );
     }
 
+    /**
+     * Open Reset password component.
+     */
+    openResetPasswordComponent() {
+        const modalRef = this.modalService.open(ResetPasswordComponent,
+            {
+                centered: true,
+                backdropClass: 'white-backdrop',
+                keyboard: false,
+                size: 'md',
+                windowClass: 'bh_modal_box',
+                modalDialogClass: 'd-flex justify-content-center',
+                animation: true,
+                backdrop: 'static',
+            }
+        );
+    }
+
+    /**
+     * Close all active modal box.
+     */
     closeAllModalBox() {
         this.modalService.dismissAll();
     }
 
-    setIdTokenInLocalStorage(idToken) {
-        localStorage.setItem(`${LOCALSTORAGE_TOKEN_NAME.name}`, idToken);
-    }
-
-    getIdTokenInLocalStorage() {
-        const user: any = getUserDetails(localStorage.getItem(`${LOCALSTORAGE_TOKEN_NAME.name}`));
-        return user;
+    validateImageFile(name: String) {
+        let allowed_extensions = ['jpg', 'jpeg', 'png'];
+        var ext = name.substring(name.lastIndexOf('.') + 1);
+        if (allowed_extensions.lastIndexOf(ext.toLowerCase()) !== -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -163,17 +196,5 @@ export class CommonFunction {
 
     getRand() {
         return Math.floor(Math.random() * 100000);
-    }
-}
-
-export function cannotContainSpace(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        if (control.value?.trim().length > 0) { }
-        else {
-            if (control.value) {
-                return { 'invalidSpace': true }
-            }
-        }
-        return null;
     }
 }

@@ -1,15 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { catchError, finalize, of, Subject, Subscription, switchMap, takeUntil, tap } from 'rxjs';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, Subscription } from 'rxjs';
 import { CommonFunction } from 'src/app/modules/core/common/common-function';
-import { CustomValidators } from 'src/app/modules/core/helpers/MatchValidator';
 import { emailPattern } from 'src/app/modules/core/helpers/validation.helper';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { PROVIDER_TYPE } from 'src/app/modules/core/helpers/bloghub.config';
 
 @Component({
   selector: 'app-login',
@@ -69,6 +67,14 @@ export class LoginComponent implements OnInit {
     this.commonFunction.openSignUpComponent();
   }
 
+  /**
+   * Go to reset password page
+   */
+  navigateToResetPassword() {
+    this.activeModal.close();
+    this.commonFunction.openResetPasswordComponent();
+  }
+
   checkWhiteSpace(event: any) {
     if (event && event.code === 'Space' && event.keyCode === 32) {
       event.preventDefault();
@@ -94,8 +100,6 @@ export class LoginComponent implements OnInit {
    * Login With Email-Password
    */
   loginWithEmailPassword() {
-    const { email, password } = this.loginForm.value;
-
     if (this.loginForm.invalid) {
       Object.keys(this.loginForm.controls).forEach(controlName =>
         this.loginForm.controls[controlName].markAsTouched()
@@ -106,9 +110,9 @@ export class LoginComponent implements OnInit {
     this.authService.setVerifyData({ email: this.loginForm.value.email });
     this.authService.loginWithEmailPassword(this.loginForm.value)
       .then((res: any) => {
-        console.log(res);
+        // this.router.navigate(['/blogs']);
+        // this.cdr.detectChanges();
         this.commonFunction.closeAllModalBox();
-        this.router.navigate(['/blogs']);
       }).catch(e => {
         this.toastr.error(e.message, 'Error');
       });

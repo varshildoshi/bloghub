@@ -1,0 +1,47 @@
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    padding: 6px;
+    cursor: pointer;
+    background: linear-gradient(270deg, #004499, #e0295f);
+}
+
+.img-wrap {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.img-upload:before {
+    content: "\f093";
+    font-size: 90px;
+    position: absolute;
+    padding-top: 80px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #004499;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: 0.5s ease;
+    background-color: #fff;
+}
+
+.img-upload:hover:before {
+    opacity: 1;
+}
+
+.profileImg {
+    width: 100%;
+    height: 100%;
+}

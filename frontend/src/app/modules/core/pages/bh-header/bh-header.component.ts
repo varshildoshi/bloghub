@@ -37,10 +37,6 @@ export class BhHeaderComponent implements OnInit {
   }
 
   getUserAuthState() {
-    // this.isAuthenticated = this.authService.checkUserIsAuthorized();
-
-    // console.log(this.isAuthenticated);
-
     this.userSub = this.authService.user.subscribe(res => {
       this.isAuthenticated = !!res;
       if (res) {
@@ -72,7 +68,6 @@ export class BhHeaderComponent implements OnInit {
   logout() {
     // this.getUserAuthState();
     this.authService.logout();
-    this.router.navigateByUrl('/');
   }
 
   ngOnDestroy() {

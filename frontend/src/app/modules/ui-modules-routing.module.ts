@@ -31,15 +31,15 @@ const routes: Routes = [
             path: 'blogs',
             loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule),
             canActivate: [AuthorizationGuardService],
-          }
+          },
+          {
+            path: 'user',
+            loadChildren: () => import('./user/user.module').then(m => m.BlogHubUserModule),
+            canActivate: [AuthorizationGuardService],
+          },
         ]
       }
     ],
-  },
-  {
-    path: 'user',
-    loadChildren: () => import('./user/user.module').then(m => m.BlogHubUserModule),
-    // canActivate: [LoginAuthorizationGuardService]
   },
 ];
 

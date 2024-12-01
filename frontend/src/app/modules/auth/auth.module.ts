@@ -18,6 +18,7 @@ import { RegisterComponent } from './pages/register/register.component';
 // import { SharedModule } from '../shared/shared.module';
 import { AuthNoticeComponent } from './pages/auth-notice/auth-notice.component';
 import { VerifyEmailComponent } from './pages/verify-email/verify-email.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import { VerifyEmailComponent } from './pages/verify-email/verify-email.componen
         RegisterComponent,
         AuthNoticeComponent,
         VerifyEmailComponent,
+        ResetPasswordComponent,
     ]
 })
 export class BlogHubAuthModule { }

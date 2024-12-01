@@ -9,22 +9,13 @@ import { filter, from, map, Observable, of, switchMap } from 'rxjs';
 export class UserService {
 
   constructor(
-    private afs: AngularFirestore,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private afs: AngularFirestore
   ) { }
 
-  // get currentUserProfile$(): Observable<any> {
-  //   return this.authService.currentUser$.pipe(
-  //     switchMap((user) => {
-  //       if (!user?.uid) {
-  //         return of(null);
-  //       }
-
-  //       const ref = doc(this.firestore, 'users', user?.uid);
-  //       return docData(ref) as Observable<ProfileUser>;
-  //     })
-  //   );
-  // }
+  getProfileData(currentUserId) {
+    return this.afs.doc(`users/${currentUserId}`).valueChanges();
+  }
 
   // addUser(user): Observable<any> {
   //   // const ref = this.afs.collection('users').add(user);

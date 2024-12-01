@@ -1,0 +1,10 @@
+<div>
+  <label class="custom-file-upload fas">
+    <div class="img-wrap img-upload">
+      <img class="profileImg" [src]="displayImage(form.controls[controlName].value)" referrerpolicy="no-referrer">
+    </div>
+    <input type="file" name="image" #fileInput (change)="fileChange($event); notifyChange()"
+      accept="{{ fileExtensions }}" />
+  </label>
+  <div *ngIf="imageFileError" class="text-danger text-center mb-2 mt-2">{{ imageErrorMsg }}</div>
+</div>
