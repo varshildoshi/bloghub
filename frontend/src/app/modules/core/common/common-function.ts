@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // import * as moment from 'moment';
-import { AuthNoticeService } from 'src/app/services/auth-notice.service';
 import { LoginComponent } from '../../auth/pages/login/login.component';
 import { RegisterComponent } from '../../auth/pages/register/register.component';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
@@ -10,6 +9,7 @@ import { LOCALSTORAGE_TOKEN_NAME } from '../helpers/bloghub.config';
 import { getUserDetails } from '../helpers/jwt.helper';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ResetPasswordComponent } from '../../auth/pages/reset-password/reset-password.component';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
@@ -18,7 +18,6 @@ import { ResetPasswordComponent } from '../../auth/pages/reset-password/reset-pa
 export class CommonFunction {
 
     constructor(
-        public authNoticeService: AuthNoticeService,
         private modalService: NgbModal,
     ) { }
 
@@ -61,7 +60,7 @@ export class CommonFunction {
     /**
      * Open Verify email component.
      */
-    openVerifyEmailComponent() {
+    openVerifyEmailComponent(modalStatus) {
         const modalRef = this.modalService.open(VerifyEmailComponent,
             {
                 centered: true,
@@ -74,6 +73,7 @@ export class CommonFunction {
                 backdrop: 'static',
             }
         );
+        modalRef.componentInstance.modalStatus = modalStatus;
     }
 
     /**
@@ -101,6 +101,12 @@ export class CommonFunction {
         this.modalService.dismissAll();
     }
 
+    checkWhiteSpace(event: any) {
+        if (event && event.code === 'Space' && event.keyCode === 32) {
+            event.preventDefault();
+        }
+    }
+
     validateImageFile(name: String) {
         let allowed_extensions = ['jpg', 'jpeg', 'png'];
         var ext = name.substring(name.lastIndexOf('.') + 1);
@@ -117,24 +123,15 @@ export class CommonFunction {
      * @param err - Error status code.
      */
     httpErrorType(err: any) {
-        this.authNoticeService.setNotice(err.error.message, 'error');
+        console.log(err);
         // switch (err.status) {
-        //     // case ERROR_CODE.ERROR_500:
-        //     //     this.authNoticeService.setNotice(err.error.message, 'error');
-        //     //     break;
-        //     // default:
-        //     //     this.authNoticeService.setNotice(err.error.message, 'error');
-        //     //     break;
+        //     case ERROR_CODE.ERROR_500:
+        //         console.log(err);
+        //         break;
+        //     default:
+        //     console.log(err);
+        //         break;
         // }
-    }
-
-    /**
-     * Hide all notice.
-     */
-    hideNotice() {
-        setTimeout(() => {
-            this.authNoticeService.setNotice(null);
-        }, 2000);
     }
 
     /**
@@ -159,7 +156,6 @@ export class CommonFunction {
 
     /** Copy to  Clipboard */
     copyToClipBoard(val) {
-        console.log(val);
         if (val) {
             // tslint:disable-next-line: prefer-const
             let selBox = document.createElement('textarea');

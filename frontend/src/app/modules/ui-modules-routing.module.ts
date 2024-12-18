@@ -7,14 +7,13 @@ import { AuthorizationGuardService } from './core/guards/authorization-guard-ser
 const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.BlogHubAuthModule),
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then(m => m.BlogHubAdminModule),
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
   },
   { path: '', pathMatch: 'full', redirectTo: 'home' },
-  // { path: 'blogs', pathMatch: 'full', redirectTo: 'blogs' },
   {
     path: '',
     children: [
@@ -34,7 +33,7 @@ const routes: Routes = [
           },
           {
             path: 'user',
-            loadChildren: () => import('./user/user.module').then(m => m.BlogHubUserModule),
+            loadChildren: () => import('./user/user.module').then(m => m.UserModule),
             canActivate: [AuthorizationGuardService],
           },
         ]

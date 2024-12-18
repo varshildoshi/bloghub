@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BlogHubUserRoutingModule } from './user-routing.module';
+import { UserRoutingModule } from './user-routing.module';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 import { MyProfileComponent } from './pages/my-profile/my-profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,10 +15,10 @@ import { CoreModule } from '../core/core.module';
   ],
   imports: [
     CommonModule,
-    BlogHubUserRoutingModule,
+    UserRoutingModule,
     FormsModule, ReactiveFormsModule,
     NgbPopoverModule,
     CoreModule
   ]
 })
-export class BlogHubUserModule { }
+export class UserModule { }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -18,7 +17,6 @@ export class AllBlogsComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private activeModalBox: NgbActiveModal,
-    private afAuth: AngularFireAuth,
   ) { }
 
   ngOnInit(): void {

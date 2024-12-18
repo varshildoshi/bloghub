@@ -13,16 +13,20 @@
                             <div class="card-body p-0">
                                 <div class="text-center mb-2">
                                     <div>
-                                        <app-file-uploader [form]="profileForm" [controlName]="'photoURL'"
-                                            [fileExtensions]="'image/png, image/jpeg'" (change)="onFileSelected($event)">
+                                        <app-file-uploader [form]="profileForm" [controlName]="'profilePic'"
+                                            [fileExtensions]="'image/png, image/jpeg'"
+                                            (change)="onFileSelected($event)">
                                         </app-file-uploader>
+                                        <div class="progress_container mt-3" *ngIf="loading">
+                                            <i class="fa-solid fa-spinner fa-spin fa-2xl"></i>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="text-center mb-2 my-2">
                                     <span class="d-flex justify-content-center align-items-center">
                                         <img class="icon_h_w"
-                                            src="{{currentUserData.emailVerified ? verifiedNotVerifiedICON.verified_icon : verifiedNotVerifiedICON.not_verified_icon}}" />
-                                        <p class="mx-1 mb-0">{{currentUserData.emailVerified ? 'Verified' : 'Not
+                                            src="{{currentUserData.email_verified ? verifiedNotVerifiedICON.verified_icon : verifiedNotVerifiedICON.not_verified_icon}}" />
+                                        <p class="mx-1 mb-0">{{currentUserData.email_verified ? 'Verified' : 'Not
                                             Verified'}}</p>
                                     </span>
                                 </div>
@@ -46,7 +50,7 @@
                                         <div class="form-group mb-3">
                                             <label class="form-label">First name</label>
                                             <input type="text" class="form-control" formControlName="firstName"
-                                                tabindex="1" (keypress)="checkWhiteSpace($event)"
+                                                tabindex="1" (keypress)="commonFunction.checkWhiteSpace($event)"
                                                 [ngClass]="{'has-error': profileForm.controls['firstName'].errors}">
                                             <div
                                                 *ngIf="profileForm.controls['firstName'].errors && profileForm.controls['firstName'].touched">
@@ -55,6 +59,14 @@
                                                     class="text-danger">
                                                     Please enter first name
                                                 </span>
+                                                <span *ngIf="profileForm.controls['firstName'].errors?.minlength"
+                                                    class="text-danger">
+                                                    First name must be at least 2 characters
+                                                </span>
+                                                <span *ngIf="profileForm.controls['firstName'].errors?.maxlength"
+                                                    class="text-danger">
+                                                    First name must be at least 15 characters
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -62,7 +74,7 @@
                                         <div class="form-group mb-3">
                                             <label class="form-label">Last name</label>
                                             <input type="text" class="form-control" formControlName="lastName"
-                                                tabindex="2" (keypress)="checkWhiteSpace($event)"
+                                                tabindex="2" (keypress)="commonFunction.checkWhiteSpace($event)"
                                                 [ngClass]="{'has-error': profileForm.controls['lastName'].errors}">
                                             <div
                                                 *ngIf="profileForm.controls['lastName'].errors && profileForm.controls['lastName'].touched">
@@ -70,6 +82,14 @@
                                                     *ngIf="profileForm.controls['lastName'].errors && profileForm.controls['lastName'].errors.required"
                                                     class="text-danger">
                                                     Please enter last name
+                                                </span>
+                                                <span *ngIf="profileForm.controls['lastName'].errors?.minlength"
+                                                    class="text-danger">
+                                                    Last name must be at least 2 characters
+                                                </span>
+                                                <span *ngIf="profileForm.controls['lastName'].errors?.maxlength"
+                                                    class="text-danger">
+                                                    Last name must be at least 15 characters
                                                 </span>
                                             </div>
                                         </div>
@@ -89,27 +109,36 @@
                                                 <span
                                                     class="input-group-text profile_prefix_span">{{defaultDisplayNamePrefix.perfix}}</span>
                                                 <input type="text" class="form-control profile_prefix_css"
-                                                    formControlName="displayName" tabindex="3"
-                                                    [ngClass]="{'has-error': profileForm.controls['displayName'].errors}">
+                                                    formControlName="username" tabindex="3"
+                                                    (keypress)="commonFunction.checkWhiteSpace($event)"
+                                                    [ngClass]="{'has-error': profileForm.controls['username'].errors}">
                                             </div>
                                             <div
-                                                *ngIf="profileForm.controls['displayName'].errors && profileForm.controls['displayName'].touched">
+                                                *ngIf="profileForm.controls['username'].errors && profileForm.controls['username'].touched">
                                                 <span
-                                                    *ngIf="profileForm.controls['displayName'].errors && profileForm.controls['displayName'].errors.required"
+                                                    *ngIf="profileForm.controls['username'].errors && profileForm.controls['username'].errors.required"
                                                     class="text-danger">
                                                     Please enter user name
+                                                </span>
+                                                <span *ngIf="profileForm.controls['username'].errors?.minlength"
+                                                    class="text-danger">
+                                                    User name must be at least 2 characters
+                                                </span>
+                                                <span *ngIf="profileForm.controls['username'].errors?.maxlength"
+                                                    class="text-danger">
+                                                    User name must be at least 15 characters
                                                 </span>
                                             </div>
                                             <span class="text-warning">
                                                 <span class="text-dark">Your user name will be:</span>
-                                                {{defaultDisplayNamePrefix.perfix}}{{profileForm.controls['displayName'].value}}</span>
+                                                {{defaultDisplayNamePrefix.perfix}}{{profileForm.controls['username'].value}}</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label class="form-label">Email</label>
                                             <input type="email" class="form-control" formControlName="email"
-                                                tabindex="4" (keypress)="checkWhiteSpace($event)"
+                                                tabindex="4" (keypress)="commonFunction.checkWhiteSpace($event)"
                                                 [ngClass]="{'has-error': profileForm.controls['email'].errors}">
                                             <div
                                                 *ngIf="profileForm.controls['email'].errors && profileForm.controls['email'].touched">

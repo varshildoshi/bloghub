@@ -1,0 +1,142 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import 'ngx-toastr/toastr';
+
+:root {
+    --bh-button-blue-color: #004499;
+    --bh-button-red-color: #e0295f;
+    --bh-button-hover-red-color: #e9638b;
+    --bh-color-grayish: #dadce0;
+}
+
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: rgba(0, 0, 0, 0.8) !important;
+    position: relative !important;
+    min-height: 100vh !important;
+    background-color: #e3deda !important;
+    font-family: "Nunito", sans-serif !important;
+}
+
+body.modal-open {
+    overflow: hidden !important;
+}
+
+// body {
+//     .ngx-spinner-overlay {
+//         overflow: hidden !important;
+//     }
+// }
+
+.c-pointer {
+    cursor: pointer !important;
+}
+
+.has-error.ng-invalid.ng-touched {
+    border: 1px solid #f4516c;
+
+    ~.password_field_span {
+        border: 1px solid #f4516c !important;
+        border-left: none !important;
+    }
+}
+
+.bh_section_bg {
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.8);
+    position: relative;
+    min-height: 100vh;
+    background-color: #e3deda !important;
+}
+
+// BH BTN CLASSES START //
+// BTN RED START //
+.bh_btn_red {
+    color: #ffffff !important;
+    background-color: var(--bh-button-red-color) !important;
+    border-color: var(--bh-button-red-color) !important;
+    font-weight: 700 !important;
+
+    &:hover {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        box-shadow: 0 .5rem 1.125rem -0.5rem rgba(224, 41, 95, .9) !important;
+    }
+}
+
+.bh_btn_red_outline {
+    color: var(--bh-button-red-color);
+    border-color: var(--bh-button-red-color);
+    background-color: transparent;
+
+    &:hover {
+        color: #ffffff;
+        background-color: var(--bh-button-red-color);
+        border-color: var(--bh-button-red-color);
+    }
+}
+
+// BTN RED END //
+
+// BTN BLUE START //
+.bh_btn_blue {
+    color: #ffffff;
+    background-color: var(--bh-button-blue-color);
+    border-color: var(--bh-button-blue-color);
+    font-weight: 700;
+
+    &:hover {
+        color: #ffffff;
+        font-weight: 700;
+        box-shadow: 0 .5rem 1.125rem -0.5rem rgba(0, 68, 153, .9) !important;
+    }
+}
+
+.bh_btn_blue_outline {
+    color: var(--bh-button-blue-color);
+    border-color: var(--bh-button-blue-color);
+    background-color: transparent;
+
+    &:hover {
+        color: #ffffff;
+        background-color: var(--bh-button-blue-color);
+        border-color: var(--bh-button-blue-color);
+    }
+}
+
+// BTN BLUE END //
+// BH BTN CLASSES END //
+
+.bh_btn_radius {
+    border-radius: 10px !important;
+}
+
+.bh_blue_body_text {
+    color: var(--bh-button-blue-color) !important;
+}
+
+.bh_red_body_text {
+    color: var(--bh-button-red-color) !important;
+}
+
+.bh_z_1 {
+    z-index: 1 !important;
+}
+
+a {
+    text-decoration: none !important;
+    color: var(--bh-button-blue-color) !important;
+
+    &:hover {
+        color: var(--bh-button-red-color) !important;
+        // border-bottom: 1px solid var(--bh-button-red-color) !important;
+    }
+}

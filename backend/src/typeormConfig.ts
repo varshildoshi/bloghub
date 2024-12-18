@@ -6,7 +6,8 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     password: 'root',
     port: 5432,
     host: 'localhost',
-    database: 'blogapp',
+    database: 'bloghub',
     synchronize: true,
     entities: ["dist/**/*.entity{.ts,.js}"],
+    autoLoadEntities: true
 };

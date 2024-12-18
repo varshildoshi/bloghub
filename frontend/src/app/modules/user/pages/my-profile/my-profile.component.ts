@@ -2,13 +2,18 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { emailPattern } from 'src/app/modules/core/helpers/validation.helper';
-import * as firebase from 'firebase/auth';
-import { finalize, Subscription } from 'rxjs';
+import { catchError, finalize, map, of, Subscription, tap } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DEFAULT_DISPLAYNAME_PREFIX, DEFAULT_PROFILE_ICON, VERIFIED_NOT_VERIFIED_ICON } from 'src/app/modules/core/helpers/bloghub.config';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { CommonFunction } from 'src/app/modules/core/common/common-function';
+import { environment } from 'src/environments/environment';
+import { HttpEventType } from '@angular/common/http';
+
+export interface File {
+  data: any,
+}
 
 @Component({
   selector: 'app-my-profile',
@@ -29,70 +34,59 @@ export class MyProfileComponent implements OnInit {
   photoURL: any;
   currentImageUrl: string;
   selectedFile: File | null = null;
+  defaultImage = 'assets/images/avatar/user-profile.png';
+  file: File = {
+    data: null,
+  }
+  loading = false;
+  successMessage: string = '';
 
   constructor(
     public fb: FormBuilder,
-    private toastr: ToastrService,
-    private authService: AuthenticationService,
-    private userService: UserService,
-    private cd: ChangeDetectorRef,
-    private spinner: NgxSpinnerService,
-    private storage: AngularFireStorage,
+    public toastr: ToastrService,
+    public authService: AuthenticationService,
+    public userService: UserService,
+    public cd: ChangeDetectorRef,
+    public spinner: NgxSpinnerService,
+    public commonFunction: CommonFunction
   ) { }
 
   ngOnInit(): void {
     this.spinner.show();
     this.profileForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      displayName: ['', [Validators.required]],
-      email: ['', { disabled: true }, [Validators.required, Validators.pattern(emailPattern())]],
-      photoURL: [''],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(15)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(15)]],
+      username: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(15)]],
+      email: ['', [Validators.required, Validators.pattern(emailPattern())]],
+      profilePic: [''],
     });
+    this.profileForm.controls.email.disable();
+    this.getCurrentUserProfileData();
+  }
 
-    this.userSub = this.authService.user.subscribe(async (res: any) => {
+  getCurrentUserProfileData() {
+    this.spinner.show();
+    this.userService.getUserProfile(this.authService.getUserID()).subscribe((res: any) => {
       if (res) {
-        this.currentUserId = res.uid;
-        // this.currentImageUrl = await this.storage.ref(res.photoURL)
-        //   .getDownloadURL()
-        //   .toPromise();
+        this.spinner.hide();
+        this.currentUserId = res.id;
+        this.currentUserData = {
+          ...res,
+        };
+        this.profileForm.patchValue({
+          firstName: res.firstName,
+          lastName: res.lastName,
+          email: res.email,
+          username: `${res.username ? res.username : res.firstName + res.lastName}`,
+          email_verified: res.email_verified,
+          profilePic: res.profileImage ? `${environment.baseURL}users/profile-image/${res.profileImage}` : this.defaultImage
+        });
 
-        console.log(this.currentUserId);
-        this.cd.detectChanges();
-      } else {
-        this.currentUserId = null;
-        this.cd.detectChanges();
       }
     });
-    this.setProfileFormData();
   }
 
-  setProfileFormData() {
-    this.userService.getProfileData(this.currentUserId).subscribe((res: any) => {
-      console.log(res);
-      this.spinner.hide();
-      this.profileForm.patchValue({
-        firstName: res.firstName,
-        lastName: res.lastName,
-        email: res.email,
-        displayName: `${res.displayName ? res.displayName : res.firstName + res.lastName}`,
-        emailVerified: res.emailVerified,
-        photoURL: res.photoURL,
-        uid: res.uid
-      });
-      this.currentUserData = {
-        ...res,
-      };
-    });
-  }
-
-  checkWhiteSpace(event: any) {
-    if (event && event.code === 'Space' && event.keyCode === 32) {
-      event.preventDefault();
-    }
-  }
-
-  onFileSelected(event) {                                 // called each time file input changes
+  onFileSelected(event) {
     const mimeType = event.target.files[0].type;
     this.url = '';
     if (mimeType !== 'image/png' && mimeType !== 'image/jpeg') {
@@ -107,49 +101,57 @@ export class MyProfileComponent implements OnInit {
       };
     }
     this.selectedFile = event.target.files[0];
+    this.file = {
+      data: event.target.files[0],
+    }
+    this.uploadProfileImage();
   }
 
-  resetProfileForm() {
-    this.setProfileFormData();
-    this.profileForm.markAsUntouched();
+  uploadProfileImage() {
+    this.loading = true;
+    const formData = new FormData;
+    formData.append('file', this.file.data);
+    this.userService.uploadProfile(formData).subscribe(res => {
+      if (res) {
+        this.loading = false;
+        this.toastr.success(res.message, 'Success');
+        this.getCurrentUserProfileData();
+      }
+    }), catchError(err => {
+      this.toastr.error(err.error.message, 'Error');
+      this.loading = false;
+      return of(err);
+    });
   }
 
   async submitProfileForm() {
-    // if (this.photoURL.length) {
-    //   const file = this.photoURL[0];
-    //   const fullPathInStorage = await this.uploadImage(this.currentUserId, file);
-
-    //   this.currentImageUrl = await this.storage
-    //     .ref(fullPathInStorage)
-    //     .getDownloadURL()
-    //     .toPromise();
-    // }
-
-    this.uploadToFirebase();
-  }
-
-  async uploadImage(uid, file): Promise<string> {
-    const fileRef = this.storage.ref(uid).child(file.name);
-    if (!!file) {
-      const result = await fileRef.put(file);
-      return result.ref.fullPath;
+    if (this.profileForm.invalid) {
+      Object.keys(this.profileForm.controls).forEach(controlName =>
+        this.profileForm.controls[controlName].markAsTouched()
+      );
+      return;
     }
-  }
 
-  uploadToFirebase() {
-    if (this.selectedFile) {
-      const filePath = `profileImages/${this.selectedFile.name}`;
-      const fileRef = this.storage.ref(filePath);
-      const task = this.storage.upload(filePath, this.selectedFile);
-
-      task.snapshotChanges().pipe(
-        finalize(() => {
-          fileRef.getDownloadURL().subscribe(url => {
-            console.log('Firebase URL:', url);
-          });
-        })
-      ).subscribe();
+    let payload = {
+      id: this.currentUserId,
+      firstName: this.profileForm.value.firstName,
+      lastName: this.profileForm.value.lastName,
+      username: this.profileForm.value.username,
     }
+
+    this.userService.updateUser(payload).subscribe(res => {
+      if (res) {
+        this.toastr.success(res.message, 'Success');
+        this.getCurrentUserProfileData();
+      }
+    }), catchError(err => {
+      this.toastr.error(err.error.message, 'Error');
+      return of(err);
+    });
   }
 
+  resetProfileForm() {
+    this.getCurrentUserProfileData();
+    this.profileForm.markAsUntouched();
+  }
 }

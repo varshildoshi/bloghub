@@ -9,16 +9,22 @@ export class User {
     id: number;
 
     @Column()
-    name: string;
+    firstName: string;
 
-    @Column({ unique: true })
+    @Column()
+    lastName: string;
+
+    @Column({ unique: true, nullable: true })
     username: string;
 
     @Column()
     email: string;
 
-    @Column({ select: false })
+    @Column()
     password: string;
+
+    @Column({ nullable: true })
+    email_verified: boolean;
 
     @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
     role: UserRole;

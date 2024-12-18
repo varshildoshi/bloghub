@@ -16,7 +16,7 @@ import { UserModule } from 'src/user/user.module';
             useFactory: async (configService: ConfigService) => ({
                 secret: process.env.JWT_SECRET || 'BLOGappNODEV1',
                 // expire: parseInt(process.env.JWT_EXPIRE) || 3600,
-                signOptions: { expiresIn: process.env.JWT_EXPIRE || '1h' },
+                signOptions: { expiresIn: process.env.JWT_EXPIRE || '2h' },
                 // signOptions: { expiresIn: parseInt(process.env.JWT_EXPIRE) || 10000 }
             })
         })

@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { UserInterface, UserRole } from '../models/user.interface';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { catchError, from, map, Observable, of, tap } from 'rxjs';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
 import { join } from 'path';
 import { UserIsUserGuard } from 'src/auth/guards/userIsUser-guard';
+import { VERIFY_EMAIL_STATUS } from '../models/user.const';
 
 export const storage = {
     storage: diskStorage({
@@ -28,28 +29,62 @@ export const storage = {
 @Controller('users')
 export class UserController {
 
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService) {
+    }
 
-    @UseGuards(JwtAuthGuard)
-    @Post()
-    create(@Body() user: UserInterface): Observable<UserInterface | Object> {
-        return this.userService.create(user).pipe(
-            map((user: UserInterface) => user),
-            catchError(err => of({ error: err.message }))
-        );
+    @Post('register')
+    // @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async create(@Body() user: UserInterface): Promise<any> {
+        try {
+            let newUser = await this.userService.create(user);
+            return await newUser.pipe(
+                map(async (user: UserInterface) => {
+                    await this.userService.createEmailToken(user.email);
+                    let sent = await this.userService.sendEmailVerification(user.email);
+                    if (sent) {
+                        return { message: 'Verification Mail Sent Successfully on your registered mail id', email_verification_sent: sent };
+                    } else {
+                        return { message: 'Mail not sent', email_verification_sent: sent };
+                    }
+                })
+            )
+        } catch (error) {
+            return 'Something went wrong';
+        }
     }
 
     @Post('login')
-    login(@Body() user: UserInterface): Observable<Object> {
-        return this.userService.login(user).pipe(
-            map((jwt: string) => {
-                return { access_token: jwt };
-            })
-        )
+    async login(@Body() user: UserInterface): Promise<any> {
+        // return (await this.userService.login(user)).pipe(
+        //     map((jwt: string) => {
+        //         return { access_token: jwt };
+        //     })
+        // )
+
+        return (await this.userService.login(user)).pipe(
+            map((res: any) => {
+                return { access_token: res.token, id: res.id, isLoggedIn: res.isLoggedIn }
+            }));
+    }
+
+    @Post('verify')
+    async verifyEmail(@Body() payload): Promise<any> {
+        try {
+            let res = await this.userService.verifyEmail(payload);
+            if (res && res.verifyEmailStatus == VERIFY_EMAIL_STATUS.ALREADY_VERIFIED) {
+                return { message: 'You have successfully verified the account', isEmailVerified: 'ALREADY_VERIFIED' };
+            } else if (res && res.verifyEmailStatus == VERIFY_EMAIL_STATUS.VERIFIED) {
+                return { message: 'You have successfully verified the account', isEmailVerified: 'VERIFIED' };
+            }
+        }
+        catch (error) {
+            return { message: error, isEmailVerified: false };
+        }
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get(':id')
+    @Get('profile/:id')
     findOne(@Param() params): Observable<UserInterface> {
         return this.userService.findOne(params.id);
     }
@@ -89,8 +124,12 @@ export class UserController {
 
     @UseGuards(JwtAuthGuard, UserIsUserGuard)
     @Put(':id')
-    update(@Param('id') id: string, @Body() user: UserInterface): Observable<any> {
-        return this.userService.update(Number(id), user);
+    async update(@Param('id') id: string, @Body() user: UserInterface): Promise<any> {
+        return (await this.userService.updateUser(Number(id), user)).pipe(
+            map((res: any) => {
+                return { access_token: res.token, id: res.id, isLoggedIn: res.isLoggedIn, message: 'Profile updated Successfully.' }
+            })
+        );
     }
 
     @hasRoles(UserRole.ADMIN)
@@ -103,12 +142,13 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Post('upload')
     @UseInterceptors(FileInterceptor('file', storage))
-    uploadFile(@UploadedFile() file, @Request() req): Observable<Object> {
+    async uploadFile(@UploadedFile() file, @Request() req): Promise<Observable<Object>> {
         const user: UserInterface = req.user;
-
-        return this.userService.update(user.id, { profileImage: file.filename }).pipe(
-            map((user: UserInterface) => ({ profileImage: user.profileImage }))
-        )
+        return (await this.userService.updateUser(user.id, { profileImage: file.filename })).pipe(
+            map((res: any) => {
+                return { access_token: res.token, id: res.id, isLoggedIn: res.isLoggedIn, message: 'Profile updated Successfully.' }
+            })
+        );
     }
 
     // @UseGuards(JwtAuthGuard)
